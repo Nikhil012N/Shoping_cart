@@ -7,11 +7,6 @@ const orderSchema = new Schema(
       ref: "User",
       required: [true, "User id is required"],
     },
-
-    created_at: {
-      type: Date,
-      default: Date.now,
-    },
     address_line: {
       type: String,
       required: [true, "Please fill the address"],
