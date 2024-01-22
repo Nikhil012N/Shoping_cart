@@ -1,4 +1,4 @@
-const Product = require("../models/productSchema");
+const Product = require("../models/product.Schema");
 const path = require("path");
 require("dotenv").config();
 const cloudinary = require("cloudinary").v2;

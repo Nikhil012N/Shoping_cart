@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 const { Decrypt } = require("./passwordencryption");
 require("dotenv").config();
 
-const paths=["/user-login", "/create-user","/forgetpassword","/products"]
+const paths=["/user-login", "/create-user","/forgetpassword","/products","/checkout-order-success","/checkout-order-failure"]
 const generateToken = (data) => {
   return jwt.sign(data, process.env.JWT_SECRET_KEY, { expiresIn: "24hr" });
 };

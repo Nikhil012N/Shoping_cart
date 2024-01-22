@@ -6,12 +6,12 @@ const {
   updateSingleUser,
   disableSingleUser,
   deleteSingleUser,
-} = require("../controller/userfunctions");
-const {getUserProfile, loginUser, registerUser} = require("../controller/loginfunctions");
-const { createNewProducts, getAllProducts } = require("../controller/products");
+} = require("../controller/user.controller");
+const {getUserProfile, loginUser, registerUser} = require("../controller/login.controller");
+const { createNewProducts, getAllProducts } = require("../controller/products.controller");
 const uploadImage  = require("../middlewares/multer");
 const productvalidations = require("../validations/productvalidations");
-const { addToCart, getCartItems, removeProductFromCart, updateToCart } = require("../controller/cartfunction");
+const { addToCart, getCartItems, removeProductFromCart, updateToCart, checkoutSession ,checkoutOrderSuccess,checkoutOrderFailure} = require("../controller/cart.controller");
 
 
 const router = express.Router();
@@ -30,4 +30,8 @@ router.post("/add-to-cart",addToCart);
 router.get("/get-cart-items",getCartItems);
 router.delete("/remove-from-cart/:id",removeProductFromCart);
 router.put("/update-to-cart",updateToCart);
+router.post("/start-checkout-session",checkoutSession);
+router.get("/checkout-order-success",checkoutOrderSuccess);
+router.get("/checkout-order-failure",checkoutOrderFailure);
+
 module.exports = router;

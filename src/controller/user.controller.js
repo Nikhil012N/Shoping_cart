@@ -1,5 +1,5 @@
 const { hashPassword, Decrypt } = require("../middlewares/passwordencryption");
-const User = require("../models/userSchema");
+const User = require("../models/user.Schema");
 const mongoose = require("mongoose");
 const isValid = mongoose.Types.ObjectId.isValid;
 

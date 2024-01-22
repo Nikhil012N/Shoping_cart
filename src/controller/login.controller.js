@@ -4,7 +4,7 @@ const {
   Decrypt,
 } = require("../middlewares/passwordencryption");
 
-const User = require("../models/userSchema");
+const User = require("../models/user.Schema");
 
 const loginUser = async (req, res) => {
   const { email, password } = req.body;
