@@ -2,6 +2,7 @@ const { generateToken } = require("../middlewares/jwtAuth");
 const {
   comparePassword,
   Decrypt,
+  hashPassword
 } = require("../middlewares/passwordencryption");
 
 const User = require("../models/user.Schema");
@@ -9,6 +10,7 @@ const User = require("../models/user.Schema");
 const loginUser = async (req, res) => {
   const { email, password } = req.body;
   console.log(req);
+  console.log(email,password);
   const Password =  Decrypt(password);
   const foundUser = await User.findOne({ email: email });
   if (!foundUser || foundUser?.disabled !== false) {
@@ -23,6 +25,7 @@ const loginUser = async (req, res) => {
     const token = generateToken({
       id: foundUser?._id,
       email: foundUser?.email,
+      role:foundUser?.role,
     });
     return res.status(200).send({ token: token });
   } catch (error) {
@@ -56,7 +59,7 @@ const registerUser = async (req, res) => {
   if (emailExist.length > 0) {
     return res.status(400).send({message:`Email '${email}' is already taken`});
   }
-  const decrryptedPassword = await Decrypt(password);
+  const decrryptedPassword = Decrypt(password);
   const hashedPassword = await hashPassword(decrryptedPassword);
   try {
     const user = new User({
@@ -72,7 +75,7 @@ const registerUser = async (req, res) => {
       .status(201)
       .json({ message: `User '${user?.username}' saved successfully` });
   } catch (error) {
-   console.log(error.toString())
+   console.log("register Error",error.toString())
     return res.status(500).json({ message: error });
   }
 };
@@ -91,7 +94,7 @@ return res.status(500).send({message:error})
 }
 }
 
+const loginWithOtp=(req,res,next)=>{}
 
 
-
-module.exports = { loginUser,registerUser,getUserProfile };
+module.exports = { loginUser,registerUser,getUserProfile ,loginWithOtp};

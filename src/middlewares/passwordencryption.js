@@ -20,9 +20,7 @@ const Decrypt = (password) => {
   return null
 }
 
-
 };
-
 const Encrypt = (data) => {
   try{
   return CryptoJS.AES.encrypt(data, secretKey).toString();

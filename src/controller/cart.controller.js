@@ -143,15 +143,11 @@ const checkoutSession = async (req, res) => {
   const products = await req?.body;
   console.log(req);
   // const url = req?.headers?.origin;
-  // console.log("url111111111111111111111111111111",url);
   const user=req.user;
   const cart=await UserCart.findOne({user_id:user});
-  console.log(cart.id,"cart .id");
-  console.log(cart._id,"cart .id");
   if (!products) {
     return res.status(404).send({ message: "No products found" });
   }
-
   try {
     const session = await stripe.checkout.sessions.create({
       client_reference_id:cart.id,
@@ -162,7 +158,7 @@ const checkoutSession = async (req, res) => {
           product_data: {
             name: itm?.product_name,
             description: itm?.description,
-            images: [itm?.thumbnil],
+            images: [itm?.thumbnail],
           },
           unit_amount: itm?.price * 100,
         },
@@ -174,7 +170,6 @@ const checkoutSession = async (req, res) => {
       cancel_url:`http://127.0.0.53:9080/api/v1/checkout-order-failure?session_id={CHECKOUT_SESSION_ID}`,
     });
 
-// console.log("ghytgjhtjh",session);
 return res.status(200).send({session:session?.id});
   } catch (error) {
     console.log("stripe api error", error.toString());
@@ -184,16 +179,23 @@ return res.status(200).send({session:session?.id});
 
 const checkoutOrderSuccess=async(req,res)=>{
   const sessionId=req.query.session_id;
+  if(!sessionId){
+    return res.status(404).send({message:"Id not found"});
+  }
   const session=await stripe.checkout.sessions.retrieve(sessionId)
-console.log("session",sessionId,session);
-return res.status(200).redirect("http://localhost:5173").send({message:sessionId});
+  console.log("session",session);
+return res.send("the is a atest message");
+
 }
 
 const checkoutOrderFailure=async(req,res)=>{
   const sessionId=req.query.session_id;
+  if(!sessionId){
+    return res.status(404).send({message:"Id not found"});
+  }
   const session=await stripe.checkout.sessions.retrieve(sessionId)
-  console.log("sessionfail",sessionId,session);
-  return res.status(200).send({message:sessionId});
+  console.log("sessionfail",session);
+  return res.status(200).send({message:"Your transaction has been failed"});
 }
 
 module.exports = {

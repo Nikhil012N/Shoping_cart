@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-
+const {gender,userRoles,Admin}=require("../utils/constant");
 const userSchema = new mongoose.Schema(
   {
     name: {
@@ -38,11 +38,12 @@ const userSchema = new mongoose.Schema(
     },
     gender: {
       type: String,
-      enum: ["male", "female", "other"],
+      enum: gender,
     },
-    admin: {
-      type: Boolean,
-      default: false,
+    role: {
+      type: String,
+      enum:userRoles,
+      default:"user"
     },
     disabled: {
       type: Boolean,
@@ -53,10 +54,23 @@ const userSchema = new mongoose.Schema(
   { versionKey: false }
 );
 
-userSchema.post("save", async function (next) {
-  console.log("Data saved successfully");
+userSchema.pre("save",async function(next){
+ if(this.email===Admin )
+ {
+  this.role='admin';
+ }
+ else if(this.email.match(/^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+(@gmail.com)$/gmi)){
+this.role="client";
+ }
+ else{
+  this.role="user";
+ }
+ 
+})
 
-  next();
+
+userSchema.post("save", async function (req,res,next) {
+  console.log("Data saved successfully");
 });
 const User= mongoose.model("User", userSchema);
 module.exports = User;
