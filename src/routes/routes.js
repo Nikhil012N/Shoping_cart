@@ -7,10 +7,10 @@ const {
   disableSingleUser,
   deleteSingleUser,
 } = require("../controller/user.controller");
-const {getUserProfile, loginUser, registerUser, loginWithOtp} = require("../controller/login.controller");
+const {getUserProfile, loginUser, registerUser, loginWithOtp,resetPassword} = require("../controller/login.controller");
 const { createNewProducts, getAllProducts } = require("../controller/products.controller");
 const uploadImage  = require("../middlewares/multer");
-const productvalidations = require("../validations/productvalidations");
+// const productvalidations = require("../validations/productvalidations");
 const { addToCart, getCartItems, removeProductFromCart, updateToCart, checkoutSession ,checkoutOrderSuccess,checkoutOrderFailure} = require("../controller/cart.controller");
 
 
@@ -34,5 +34,5 @@ router.post("/start-checkout-session",checkoutSession);
 router.get("/checkout-order-success",checkoutOrderSuccess);
 router.get("/checkout-order-failure",checkoutOrderFailure);
 router.post("/login-with-otp",loginWithOtp);
-
+router.get("/reset-password",resetPassword);
 module.exports = router;

@@ -10,8 +10,7 @@ const jwtProtected = async (req, res, next) => {
   }
   const token = await req.headers["authorization"];
   let Token;
-  console.log(token);
-  if (token.startsWith("Bearer ")) {
+  if(token?.startsWith("Bearer ")) {
     Token = token.substring(7, token.length);
   } else {
     Token = token;

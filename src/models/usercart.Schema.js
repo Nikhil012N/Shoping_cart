@@ -7,7 +7,7 @@ const cartSchema = new Schema(
       ref: "User",
       required: true,
     },
-  }, { timeStamp: true },
+  }, { timestamps: true },
   { versionKey: false }
 );
 const UserCart = mongoose.model("Usercart", cartSchema);

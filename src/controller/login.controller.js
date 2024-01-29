@@ -83,7 +83,7 @@ const registerUser = async (req, res) => {
 const getUserProfile=async(req,res,next)=>{
   const {user}=req;
   try{
-  const MyUser=await User.findById(user).select("_id name username email age gender ");
+  const MyUser=await User.findById(user).select("_id name username email age gender role ");
   if(!MyUser){
     return res.status(404).send({message:"User not found"});
   }
@@ -96,5 +96,11 @@ return res.status(500).send({message:error})
 
 const loginWithOtp=(req,res,next)=>{}
 
+const resetPassword=(req,res,next)=>{
 
-module.exports = { loginUser,registerUser,getUserProfile ,loginWithOtp};
+
+
+}
+
+
+module.exports = { loginUser,registerUser,getUserProfile ,loginWithOtp,resetPassword};

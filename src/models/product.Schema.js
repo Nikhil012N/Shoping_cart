@@ -36,7 +36,7 @@ const productSchema = new mongoose.Schema(
       max: [500, "Max 500 words are allowed"],
     },
   },
-  { timeStamp: true },
+  { timestamps: true },
   { versionKey: false }
 );
 
