@@ -6,7 +6,7 @@ const orderItemSchema = new Schema(
     user_id: { type: Schema.Types.ObjectId, ref: "User", required: true },
     price: { type: Number, required: true },
     quantity:{type:Number,required:true},
-    order_id: { type: Schema.Types.ObjectId, ref: "Order", required: true },
+    order_id: { type: Schema.Types.ObjectId, ref: "Address", required: true },
   },
   { timestamps: true },
   { versionKey: false }

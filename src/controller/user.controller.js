@@ -11,8 +11,8 @@ const getAllUsers = async (req, res) => {
   try {
     const data = await User.find({ disabled: false })
       .select("_id name username email age gender")
-      .limit(totalRecordPerPage)
       .skip(skip)
+      .limit(totalRecordPerPage) 
       .sort(sorted);
 
     if (data.length === 0) {

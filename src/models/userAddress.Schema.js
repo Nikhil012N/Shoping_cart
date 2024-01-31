@@ -33,10 +33,9 @@ const orderSchema = new Schema(
      country: {
         type: String,
         required: [true, "Select your country"],
-      },
-      metadata:{type:String,required:true}
-    }
-  
+      }, 
+    },
+    metadata:{type:String,required:true}
    
     
    

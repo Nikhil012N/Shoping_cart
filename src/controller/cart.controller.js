@@ -3,8 +3,24 @@ const Product = require("../models/product.Schema");
 const CartItem = require("../models/cartitem.Schema");
 const OrderItem = require("../models/ordereditem.Schema");
 const Address = require("../models/userAddress.Schema");
-
+const  mongoose=require("mongoose");
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+Object.prototype.unflatten = function () {
+  let k = 15;
+  let data = [];
+  for (let i = 0; i < this.length; i++) {
+    const slice = this.slice(i, k);
+    data.push(slice);
+    i = k - 1;
+    k = k + 15;
+  }
+  const reducer = data.reduce((acc, val, index) => {
+    acc[index] = JSON.stringify(val);
+    return acc;
+  }, {});
+
+  return reducer;
+};
 
 const addToCart = async (req, res, next) => {
   const { productId, quantity } = req.body;
@@ -63,7 +79,7 @@ const getCartItems = async (req, res, next) => {
   try {
     const cartData = await CartItem.aggregate([
       {
-        $match: { cart_id: foundUserInCart?._id },
+        $match: { cart_id:  foundUserInCart?._id },
       },
       {
         $lookup: {
@@ -150,7 +166,9 @@ const checkoutSession = async (req, res) => {
   if (!products) {
     return res.status(404).send({ message: "No products found" });
   }
-  const metadata=products.map((meta)=>(meta?.product_id,meta?.quantity,meta?.price));
+  const metaData = await products.map((meta) => meta?.product_id).unflatten();
+
+  console.log(metaData);
   try {
     const session = await stripe.checkout.sessions.create({
       client_reference_id: cart.id,
@@ -166,15 +184,13 @@ const checkoutSession = async (req, res) => {
           unit_amount: itm?.price * 100,
         },
         quantity: itm?.quantity,
-        
       })),
       billing_address_collection: "required",
       mode: "payment",
-     metadata:metadata,
+      metadata: metaData,
       success_url: `${url}/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${url}/failure?session_id={CHECKOUT_SESSION_ID}`,
     });
-console.log(session);
     return res.status(200).send({ session: session?.id });
   } catch (error) {
     console.error("stripe api error", error.toString());
@@ -193,38 +209,56 @@ const checkoutOrderSuccess = async (req, res) => {
     return res.status(404).send({ message: "Cart not found" });
   }
   const session = await stripe.checkout.sessions.retrieve(sessionId);
-  console.log("session", session);
-  const { id, client_reference_id, customer_details, payment_status, status ,metadata} =
-    await session;
+  const {client_reference_id, customer_details, metadata } = await session;
   const { address, email, name, phone } = await customer_details;
-  const findAddress =await Address.findOne({ metadata: JSON.stringify(session) });
-  
-  console.log(metadata);
-// var result = Object.keys(metadata).map((key) => metadata[key]);
+  const findAddress = await Address.findOne({
+    metadata: JSON.stringify(session),
+  });
+  const productIds = Object.keys(metadata)
+    .map((index) => JSON.parse(metadata[index]))
+    .flat(Infinity);
+  if (!productIds) {
+    return res.status(500).send({ message: "Something went wrong" });
+  }
+  if(findAddress?._id){
+  return  res.status(200).send({message:"Your order is saved successfully"})
+  }
   try {
-    // const myAddress = new Address({
-    //   user_id: userId,
-    //   customer_email: email,
-    //   customer_contact: phone,
-    //   customer_name: name,
-    //   address: address,
-    //   metadata: JSON.stringify(session),
-    // });
-    // if (!findAddress.user_id)
-    // { await myAddress.save();}
+    const myAddress = new Address({
+      user_id: userId,
+      customer_email: email,
+      customer_contact: phone,
+      customer_name: name,
+      address: address,
+      metadata: JSON.stringify(session),
+    });
+    console.log("addresss", findAddress?._id);
 
-    // const myOrder= new OrderItem({
-    //   product_id:
-    //   user_id:
-    //   price:
-    //   quantity:
-    //   order_id:
+  
+      await myAddress.save();
+   
 
-    // });
-    // myOrder.save();
 
-    // return res.status(200).send({message:"Your transaction has been failed"});
-  } catch (error) {}
+     const cartProducts=await CartItem.find({"product_id":{$in:productIds}}).where("cart_id").equals(client_reference_id);
+     cartProducts.map(async(item)=>{
+      const findProduct=await Product.findById(item.product_id);
+      const myOrder= new OrderItem({
+              product_id: findProduct?._id,
+              user_id:userId,
+              price: findProduct?.price,
+              quantity:item?.quantity,
+              order_id:myAddress?._id,
+            });
+            myOrder.save();
+     });
+
+    console.log("cartItems", cartProducts);
+
+   
+    console.log("address after shaved", myAddress);
+  } catch (error) {
+    console.error(error.toString());
+  }
 };
 
 const checkoutOrderFailure = async (req, res) => {
