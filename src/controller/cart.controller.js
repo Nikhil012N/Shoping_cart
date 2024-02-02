@@ -3,8 +3,10 @@ const Product = require("../models/product.Schema");
 const CartItem = require("../models/cartitem.Schema");
 const OrderItem = require("../models/ordereditem.Schema");
 const Address = require("../models/userAddress.Schema");
-const  mongoose=require("mongoose");
+const mongoose = require("mongoose");
+
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+
 Object.prototype.unflatten = function () {
   let k = 15;
   let data = [];
@@ -79,7 +81,7 @@ const getCartItems = async (req, res, next) => {
   try {
     const cartData = await CartItem.aggregate([
       {
-        $match: { cart_id:  foundUserInCart?._id },
+        $match: { cart_id: foundUserInCart?._id },
       },
       {
         $lookup: {
@@ -191,6 +193,7 @@ const checkoutSession = async (req, res) => {
       success_url: `${url}/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${url}/failure?session_id={CHECKOUT_SESSION_ID}`,
     });
+    console.log(session);
     return res.status(200).send({ session: session?.id });
   } catch (error) {
     console.error("stripe api error", error.toString());
@@ -199,32 +202,33 @@ const checkoutSession = async (req, res) => {
 };
 
 const checkoutOrderSuccess = async (req, res) => {
-  const sessionId = req.query.session_id;
-  if (!sessionId) {
-    return res.status(404).send({ message: "session Id not found !" });
-  }
-  const userId = req.user;
-  const cart = await UserCart.findOne({ user_id: userId });
-  if (!cart) {
-    return res.status(404).send({ message: "Cart not found" });
-  }
-  const session = await stripe.checkout.sessions.retrieve(sessionId);
-  const {client_reference_id, customer_details, metadata } = await session;
-  const { address, email, name, phone } = await customer_details;
-  const findAddress = await Address.findOne({
-    metadata: JSON.stringify(session),
-  });
-  const productIds = Object.keys(metadata)
-    .map((index) => JSON.parse(metadata[index]))
-    .flat(Infinity);
-  if (!productIds) {
-    return res.status(500).send({ message: "Something went wrong" });
-  }
-  if(findAddress?._id){
-  return  res.status(200).send({message:"Your order is saved successfully"})
-  }
   try {
-    const myAddress = new Address({
+    const stripeSessionId = await req.query.session_id;
+    const userId = await req.user;
+    const cart = await UserCart.findOne({ user_id: userId });
+    if (!cart) {
+      return res.status(404).send({ message: "Cart not found" });
+    }
+
+    const stripeSession = await stripe.checkout.sessions.retrieve(
+      stripeSessionId
+    );
+    if (!stripeSession || !stripeSessionId || stripeSession.code == 404) {
+      return res.status(404).send({ message: "Session Id not found" });
+    }
+    const { client_reference_id, customer_details, metadata } =
+      await stripeSession;
+    const { address, email, name, phone } = await customer_details;
+    const productIds = Object.keys(metadata)
+      .map((index) => JSON.parse(metadata[index]))
+      .flat(Infinity);
+    if (!productIds) {
+      return res.status(500).send({ message: "Something went wrong" });
+    }
+
+    const mongooseSession = await mongoose.startSession();
+    mongooseSession.startTransaction();
+    const myAddress = await Address.create({
       user_id: userId,
       customer_email: email,
       customer_contact: phone,
@@ -232,32 +236,30 @@ const checkoutOrderSuccess = async (req, res) => {
       address: address,
       metadata: JSON.stringify(session),
     });
-    console.log("addresss", findAddress?._id);
-
-  
-      await myAddress.save();
-   
-
-
-     const cartProducts=await CartItem.find({"product_id":{$in:productIds}}).where("cart_id").equals(client_reference_id);
-     cartProducts.map(async(item)=>{
-      const findProduct=await Product.findById(item.product_id);
-      const myOrder= new OrderItem({
-              product_id: findProduct?._id,
-              user_id:userId,
-              price: findProduct?.price,
-              quantity:item?.quantity,
-              order_id:myAddress?._id,
-            });
-            myOrder.save();
-     });
-
-    console.log("cartItems", cartProducts);
-
-   
-    console.log("address after shaved", myAddress);
+    await myAddress.save();
+    const cartProducts = await CartItem.find({
+      product_id: { $in: productIds },
+    })
+      .where("cart_id")
+      .equals(client_reference_id);
+    cartProducts.map(async (item) => {
+      const findProduct = await Product.findById(item.product_id);
+      const myOrder = new OrderItem({
+        product_id: findProduct?._id,
+        user_id: userId,
+        price: findProduct?.price,
+        quantity: item?.quantity,
+        order_id: myAddress?._id,
+      });
+      myOrder.save();
+    });
+    mongooseSession.commitTransaction();
+    mongooseSession.endSession();
+    console.log("Stripe session completed");
   } catch (error) {
-    console.error(error.toString());
+    mongooseSession.abortTransaction();
+    mongooseSession.endSession();
+    console.error("stripe transaction aborted", error.toString());
   }
 };
 

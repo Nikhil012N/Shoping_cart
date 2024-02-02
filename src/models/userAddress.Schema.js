@@ -7,10 +7,10 @@ const orderSchema = new Schema(
       ref: "User",
       required: [true, "User id is required"],
     },
-    customer_email:{type:String},
-    customer_contact:{type:String},
-    customer_name:{type:String},
-    address:{
+    customer_email: { type: String },
+    customer_contact: { type: String },
+    customer_name: { type: String },
+    address: {
       city: {
         type: String,
         required: [true, "Select your city"],
@@ -30,16 +30,14 @@ const orderSchema = new Schema(
         type: String,
         required: [true, "Select your state"],
       },
-     country: {
+      country: {
         type: String,
         required: [true, "Select your country"],
-      }, 
+      },
     },
-    metadata:{type:String,required:true}
-   
-    
-   
-  }, { timestamps: true },
+    metadata: { type: String, required: true, unique: true },
+  },
+  { timestamps: true },
   { versionKey: false }
 );
 

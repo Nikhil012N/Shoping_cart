@@ -8,7 +8,7 @@ const {
   deleteSingleUser,
 } = require("../controller/user.controller");
 const {getUserProfile, loginUser, registerUser, loginWithOtp,resetPassword} = require("../controller/login.controller");
-const { createNewProducts, getAllProducts } = require("../controller/products.controller");
+const { createAndUpdateProducts, getAllProducts } = require("../controller/products.controller");
 const uploadImage  = require("../middlewares/multer");
 // const productvalidations = require("../validations/productvalidations");
 const { addToCart, getCartItems, removeProductFromCart, updateToCart, checkoutSession ,checkoutOrderSuccess,checkoutOrderFailure} = require("../controller/cart.controller");
@@ -25,7 +25,8 @@ router.delete("/user/:id", deleteSingleUser);
 router.patch("/disable-user/:id", disableSingleUser);
 router.put("/update-user/:id", updateSingleUser);
 router.get("/get-profile", getUserProfile);
-router.post("/products/new-products",uploadImage.fields([{name:"thumbnail",maxCount:1},{name:"images",maxCount:10}]),createNewProducts);
+router.post("/products/new-products",uploadImage.fields([{name:"thumbnail",maxCount:1},{name:"images",maxCount:10}]),createAndUpdateProducts);
+router.put("/products/update-products",uploadImage.fields([{name:"thumbnail",maxCount:1},{name:"images",maxCount:10}]),createAndUpdateProducts);
 router.post("/add-to-cart",addToCart);
 router.get("/get-cart-items",getCartItems);
 router.delete("/remove-from-cart/:id",removeProductFromCart);

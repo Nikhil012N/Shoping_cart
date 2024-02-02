@@ -1,16 +1,21 @@
 const mongoose = require("mongoose");
 const productSchema = new mongoose.Schema(
   {
+    creator_id: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: "User",
+    },
     product_name: {
       type: String,
       required: [true, "Product name is required"],
-      unique:[true,"Product name should be unique"],
-      min:3
+      unique: [true, "Product name should be unique"],
+      min: 3,
     },
     product_category: {
       type: String,
       required: true,
-      min:3
+      min: 3,
     },
     stock: {
       type: Number,
@@ -40,5 +45,5 @@ const productSchema = new mongoose.Schema(
   { versionKey: false }
 );
 
-const Product=  mongoose.model("Product", productSchema);
- module.exports =Product;
+const Product = mongoose.model("Product", productSchema);
+module.exports = Product;
