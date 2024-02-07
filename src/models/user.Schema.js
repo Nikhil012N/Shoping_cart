@@ -72,5 +72,5 @@ this.role="client";
 userSchema.post("save", async function (req,res,next) {
   console.log("Data saved successfully");
 });
-const User= mongoose.model("User", userSchema);
+const User= mongoose.model("user", userSchema);
 module.exports = User;

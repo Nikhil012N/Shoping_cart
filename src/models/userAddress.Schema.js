@@ -35,11 +35,11 @@ const orderSchema = new Schema(
         required: [true, "Select your country"],
       },
     },
-    metadata: { type: String, required: true, unique: true },
+    metadata: { type: String, required: true },
   },
   { timestamps: true },
   { versionKey: false }
 );
 
-const Address = mongoose.model("Address", orderSchema);
+const Address = mongoose.model("address", orderSchema);
 module.exports = Address;

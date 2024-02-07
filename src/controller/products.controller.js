@@ -51,13 +51,14 @@ const createAndUpdateProducts = async function (req, res, next) {
 
     }
   } catch (error) {
-    console.log(error.toString());
+    console.error(error.toString());
     return res.status(500).send({ message:"Something went wrong",error: error });
   }
 };
 //fetching all products created by creators
 const getAllProducts = async (req, res, next) => {
   try {
+  
     const product = await Product.find();
     return res.status(200).send({ product: product });
   } catch (error) {
@@ -75,9 +76,8 @@ const sellerCreatedProducts = async (req, res) => {
   if (!myUser) {
     return res.status(404).send({ message: "User not found" });
   }
-
     const creatorsProducts = await Product.find({ user_id: user });
-    if (!creatorsProducts || creatorsProducts?.length) {
+    if (!creatorsProducts || creatorsProducts?.length==0) {
     return res.status(404).send({ message: "Insert your first product" });
     }
     return res.status(200).send({ products: creatorsProducts });
@@ -121,4 +121,4 @@ const deleteSellerProducts = async (req, res) => {
   }
 };
 
-module.exports = { createAndUpdateProducts, getAllProducts };
+module.exports = { createAndUpdateProducts, getAllProducts,sellerCreatedProducts,deleteSellerProducts};

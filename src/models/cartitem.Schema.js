@@ -17,5 +17,5 @@ const cartItemSchema = new Schema({
   }
 }, { timestamps: true }, { versionKey: false });
 
-const CartItem = mongoose.model("Cartitem", cartItemSchema);
+const CartItem = mongoose.model("cartitem", cartItemSchema);
 module.exports = CartItem;

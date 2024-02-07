@@ -8,10 +8,10 @@ const {
   deleteSingleUser,
 } = require("../controller/user.controller");
 const {getUserProfile, loginUser, registerUser, loginWithOtp,resetPassword} = require("../controller/login.controller");
-const { createAndUpdateProducts, getAllProducts } = require("../controller/products.controller");
+const { createAndUpdateProducts, getAllProducts, sellerCreatedProducts, deleteSellerProducts } = require("../controller/products.controller");
 const uploadImage  = require("../middlewares/multer");
 // const productvalidations = require("../validations/productvalidations");
-const { addToCart, getCartItems, removeProductFromCart, updateToCart, checkoutSession ,checkoutOrderSuccess,checkoutOrderFailure} = require("../controller/cart.controller");
+const { addToCart, getCartItems, removeProductFromCart, updateToCart, checkoutSession ,checkoutOrderSuccess,checkoutOrderFailure, orderSuccessList} = require("../controller/cart.controller");
 
 
 const router = express.Router();
@@ -36,4 +36,10 @@ router.get("/checkout-order-success",checkoutOrderSuccess);
 router.get("/checkout-order-failure",checkoutOrderFailure);
 router.post("/login-with-otp",loginWithOtp);
 router.get("/reset-password",resetPassword);
+router.get("/buy-order-list",orderSuccessList);
+router.get("/creators-product",sellerCreatedProducts);
+router.delete("/delete-seller-product",deleteSellerProducts);
+
+
+
 module.exports = router;

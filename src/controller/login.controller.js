@@ -98,9 +98,28 @@ const getUserProfile = async (req, res, next) => {
   }
 };
 
-const loginWithOtp = (req, res, next) => {};
+const loginWithOtp = (req, res, next) => {
 
-const resetPassword = (req, res, next) => {};
+
+};
+
+const resetPassword = async(req, res, next) => {
+const user=req?.body.user;
+const findUser=await User.findOne({email:user});
+if(!user || user.length===0)
+{
+  return res.status(403).send({message:"User not found"});
+}
+try{
+
+}
+catch(error){
+  return res.status()
+
+}
+
+
+};
 
 module.exports = {
   loginUser,

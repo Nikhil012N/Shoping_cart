@@ -19,6 +19,7 @@ const jwtProtected = async (req, res, next) => {
     return res.status(404).json({ message: "Token not found" });
   }
   try {
+    console.log(Token);
     const verifiedUser = jwt.verify(Token, process.env.JWT_SECRET_KEY);
     if (verifiedUser) {
       req.user = verifiedUser?.id;
