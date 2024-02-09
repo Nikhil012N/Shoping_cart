@@ -1,0 +1,75 @@
+.profileParent {
+  display: grid;
+  place-items: center;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.profile {
+  background: rgba( 255, 255, 255, 0.1 );
+  box-shadow: 1px 8px 14px 2px var(--primary) ;
+  backdrop-filter: blur( 7.5px );
+  -webkit-backdrop-filter: blur( 7.5px );
+  border-radius: 10px;
+  border: 1px solid var(--primary);
+  padding: 1vmax;
+  z-index: 9999px;
+  gap: 2vmax;
+  margin-bottom: 1vw;
+  border-radius: 2px;
+  max-width: calc(100vw - 10px);
+/*   
+  border: 2px solid var(--primary);
+ 
+  border-radius: 5px;
+  box-shadow: var(--primary) 0.5px 0.5px 3px 0.5px;
+   */
+}
+.cardHead {
+  text-align: -webkit-center;
+  margin: 1vw;
+
+}
+
+.cardBody{
+    display: table;
+}
+.bodyNodes{
+    display: table-row;
+
+    
+}
+
+.bodyNodes >  *::first-letter{
+    text-transform: capitalize;
+}
+
+.bodyNodes > span:first-child{
+font-size:1.5rem;
+display:table-cell;
+
+}
+.bodyNodes>span > input {
+  caret-color: grey;
+  padding: 0.1rem;
+  outline: none;
+  width:100%;
+  border: 1px solid var(--secondary);
+  border-radius: 3px;
+}
+
+
+.bodyNodes > span:last-child{
+    font-size:1.5rem;
+    position: relative;
+    display:table-cell;
+    padding: 10px;
+    overflow: hidden;
+}
+
+.cardFoot {
+    display: flex;
+    place-content: space-evenly
+}

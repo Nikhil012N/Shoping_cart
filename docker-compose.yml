@@ -1,0 +1,32 @@
+version: "2.24"
+services:
+  mongo:
+    image: mongo
+    restart: always
+   
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root 
+      MONGO_INITDB_ROOT_PASSWORD: example
+
+
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - 8081:27017
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: Nikhil
+      ME_CONFIG_MONGODB_ADMINPASSWORD: SEh1PVyzqBpUO5pX
+      ME_CONFIG_MONGODB_URL: mongodb:// Nikhil:SEh1PVyzqBpUO5pX@mongo:27017/
+#  vite_docker:
+#    image: node:alpine
+#    container_name: vite_docker
+#    entrypoint: /bin/sh
+#    ports:
+#      - 8000:8000
+#    working_dir: /srv/app
+#    volumes:
+#      - type: bind
+#        source: ./
+#        target: /srv/app
+  #  tty: true

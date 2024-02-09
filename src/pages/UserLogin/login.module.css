@@ -1,0 +1,122 @@
+.parentContainer {
+  justify-content: center;
+  align-content: center;
+  height: 100vh;
+  display: grid;
+  grid-template-columns: auto auto;
+  place-content: center;
+  align-content: center;
+
+  background-color: transparent;
+}
+
+.head {
+  display: grid;
+  justify-content: center;
+  text-align: center;
+  color: var(--secondary);
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+.parentContainer::first-letter {
+  text-transform: uppercase;
+}
+
+.firstInnerContainer {
+  background: #c6ffdd; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to right,
+    #f7797d,
+    #fbd786,
+    #c6ffdd
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to right,
+    #f7797d,
+    #fbd786,
+    #c6ffdd
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+  border: 2px solid var(--purple);
+  width: 40vw;
+  border-radius: 5px;
+  z-index: 99999;
+  padding-top: 8rem;
+  padding-bottom: 8rem;
+  padding-left: 2.5rem;
+  padding-right: 2.5rem;
+}
+.firstInnerContainer > h1 {
+  width: min-content;
+}
+.secondInnerContainer {
+  padding-top: 8rem;
+  padding-bottom: 8rem;
+  padding-left: 2.5rem;
+  padding-right: 2.5rem;
+  z-index: 99999;
+  background-color: transparent;
+  border: 2px solid #6b21a8;
+  border-radius: 5px;
+}
+
+.gridGroup {
+  position: relative;
+  place-content: flex-start;
+  height: 110px;
+  display: grid;
+}
+.gridGroup > label {
+  line-height: inherit;
+  padding: 5px;
+}
+.gridGroup > input {
+  caret-color: grey;
+  padding: 0.5rem;
+  outline: none;
+  border: 2px solid var(--secondary);
+  border-radius: 3px;
+}
+.gridGroup > div {
+  display: block;
+  color: var(--danger);
+}
+.gridGroup > .showHide {
+  position: absolute;
+  top: 2.8rem;
+  left: 14.5rem;
+}
+.gridGroup:focus-within {
+  color: #6b21a8;
+}
+
+
+
+
+.loginButtons > .signup {
+  color: var(--blue);
+  border-color: var(--blue);
+  margin-left: 0.5vw;
+}
+.loginButtons > .login {
+  color: var(--success);
+  border-color: var(--success);
+  margin-right: 0.5vw;
+
+}
+
+@media screen and (max-width: 800px) {
+  .parentContainer {
+    overflow: hidden;
+    border: 2px solid var(--purple);
+    border-radius: 5px;
+  }
+  .firstInnerContainer {
+    display: none;
+  }
+
+  .secondInnerContainer {
+    border: none;
+    transform: scale(1.2);
+  }
+}

@@ -1,0 +1,147 @@
+.container {
+  padding: 1.5vw;
+  display: grid;
+  text-transform: capitalize;
+  width:100vw;
+}
+
+.card {
+background: rgba( 255, 255, 255, 0.1 );
+box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.1 );
+backdrop-filter: blur( 7.5px );
+-webkit-backdrop-filter: blur( 7.5px );
+border-radius: 10px;
+border: 1px solid rgba( 255, 255, 255, 0.18 );
+display: grid;
+grid-template-columns: 25% 75%;
+gap: 2vmax;
+margin-bottom: 1vw;
+border-radius: 2px;
+max-width: calc(100vw - 10px);
+}
+
+.firstSection {
+  text-align: -webkit-center;
+  mix-blend-mode: darken;
+  gap: 1vw;
+  padding: 1vw;
+  display: grid;
+  align-content: space-between;
+  justify-items: center;
+  overflow: hidden;
+  max-width: 30vw;
+
+
+}
+.secondSection {
+   padding: 1vw;
+   position: relative;
+   width: calc(100vw - 30vw);
+}
+.image{
+    height:10vmax;
+    width: 20vmax;
+    object-fit: scale-down;
+}
+.name{
+  overflow: hidden;
+  font-size: 2vmin;
+  height: 2.8em;
+  text-overflow: ellipsis;
+  display: block;
+  color: var(--secondary);
+  max-width: 100%;
+
+}
+
+.description {
+  overflow: hidden;
+  font-size: 1vmax;
+  height: 2.6em;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  display: block;
+  max-width: 100%;
+}
+.deleteButton{
+background-color: #6b21A8 !important;
+padding: .5vmin;
+height: auto;
+color:white;
+}
+
+.updateButton{
+    background-color: #6b21A8 !important;   
+    color:white;
+    min-width: 20px;
+    padding: 1px;
+    border-radius: 2px;
+
+}
+.input{
+    width:50px;
+    border:1px solid grey;
+    border-radius: 3px;
+    min-width:20px;
+    padding: 1px;
+}
+
+.inputUpdate{
+    width: -webkit-fill-available;
+    display: flex;
+    justify-content: center;
+    gap:2px;
+}
+
+.price{
+    background: rgb(230, 230, 230, 0.3);
+    align-self: center;
+    padding: 0.5vmin;
+
+}
+.price> span{
+  color: var(--secondary);
+}
+.checkoutButton{
+  background-color: var(--secondary) !important;   
+  color:white;
+  min-width: fit-content;
+  padding: 1px;
+  border-radius: 2px;
+
+}
+
+
+
+
+    
+.successContainer {
+  max-width: 600px;
+  margin: 1vw;
+  padding: 20px;
+  background-color: transparent;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  display: none;
+}
+
+.successContainer>h1 {
+  color: #333333;
+  font-size: 24px;
+  margin-top: 0;
+}
+
+.successContainer> p {
+  color: #666666;
+  font-size: 16px;
+  line-height: 1.5;
+}
+.successAnimate{
+  animation: mover 5s linear ;
+  display: block;
+}
+
+@keyframes mover {
+  0% { transform: translateY(100vh); }
+  100% { transform: translateY(0%); }
+}

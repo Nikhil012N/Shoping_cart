@@ -1,0 +1,93 @@
+.head {
+  display: grid;
+  justify-content: center;
+  text-align: center;
+  color: var(--secondary);
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+.parentContainer {
+  justify-content: center;
+  align-content: center;
+  height: 100vh;
+  display: grid;
+  grid-template-columns: auto auto;
+  place-content: center;
+  align-content: center;
+  background-color: rgba( 255, 255, 255, 0.1 );;
+}
+.childContainer {
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+  padding-left: 2.5rem;
+  padding-right: 2.5rem;
+  z-index: 99999;
+  background-color: transparent;
+  border: 2px solid #6b21a8;
+  border-radius: 5px;
+}
+.gridGroup {
+  position: relative;
+  place-content: flex-start;
+  height: 110px;
+  display: grid;
+}
+.gridGroup > label {
+  line-height: inherit;
+  padding: 5px;
+}
+.gridGroup > input,
+.gridGroup > select {
+  caret-color: grey;
+  padding: 0.5rem;
+  outline: none;
+  border: 2px solid var(--secondary);
+  border-radius: 3px;
+}
+
+.gridGroup > .showHide {
+  position: absolute;
+  top: 2.8rem;
+  left: 14.5rem;
+}
+.gridGroup:focus-within {
+  color: #6b21a8;
+}
+
+.form {
+  display: grid;
+  gap: 0.5rem;
+  grid-template-columns: repeat(2, 1fr);
+  padding: 0.5rem;
+}
+@media screen and (max-width: 640px) {
+  .parentContainer {
+    border: 2px solid #6b21a8;
+    border-radius: 5px;
+  }
+  .childContainer {
+    border: none;
+    padding-top: 0;
+
+    overflow: auto;
+  }
+  .gridGroup {
+    height: 90px;
+  }
+  .form {
+    grid-template-columns: auto;
+  }
+}
+
+ .signup {
+  color: var(--blue);
+  border-color: var(--blue);
+  margin-right: 0.5vw;
+}
+ .login {
+  color: var(--success);
+  border-color: var(--success);
+ 
+  margin-left: 0.5vw;
+
+}
