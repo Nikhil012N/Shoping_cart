@@ -14,7 +14,8 @@ dist-ssr
 DocketFile
 Dockerfile
 docker-compose.yml
-
+.gitignore
+.dockerignore
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
