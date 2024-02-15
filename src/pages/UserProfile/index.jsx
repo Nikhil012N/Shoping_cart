@@ -13,9 +13,8 @@ const handleLogOut = () => {
 
 export const logOutAll = () => {
   logoutChannel.onmessage = (e) => {
-    if(e.data=="logout"){
       handleLogOut();
-      logoutChannel.close(); }
+      logoutChannel.close();
   };
 };
 const Profile = () => {

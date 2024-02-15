@@ -1,8 +1,6 @@
 import { ErrorMessage, Field, Formik, Form } from "formik";
 import * as Yup from "yup";
-import toast from "react-hot-toast";
-import { useNavigate, useLocation } from "react-router-dom";
-import { apiUrls, AxiosConfig, Encrypt } from "utils";
+import { useNavigate } from "react-router-dom";
 import { memo, useState } from "react";
 import styles from "./login.module.css";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
@@ -10,10 +8,9 @@ import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined
 
 
 
-const LoginPage = ({broadcast}) => {
+const LoginPage = ({loginHandler}) => {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
-  const location = useLocation();
   const validationSchema = Yup.object().shape({
     email: Yup.string()
       .email("Invalid email format")
@@ -43,31 +40,7 @@ const LoginPage = ({broadcast}) => {
           <Formik
             initialValues={{ email: "", password: "" }}
             validationSchema={validationSchema}
-            onSubmit={async (values, { setSubmitting, resetForm }) => {
-              const submitValues = {
-                email: values?.email.toLowerCase(),
-                password: Encrypt(values?.password),
-              };
-              console.log(submitValues);
-              try {
-                const response = await AxiosConfig.post(
-                  apiUrls?.loginUser,
-                  submitValues
-                );
-                const token = response?.token;
-                const value = Encrypt(token);
-                localStorage.setItem("loginToken", value);
-                window.location.assign(location.pathname);
-                <broadcast className="pos"></broadcast>
-                toast.success("Login Successfull");
-                resetForm();
-              } catch (e) {
-                console.log("dsf", e);
-                toast.error(e?.message);
-              } finally {
-                setSubmitting(false);
-              }
-            }}
+            onSubmit={loginHandler}
           >
             {({
               values,

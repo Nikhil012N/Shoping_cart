@@ -78,17 +78,20 @@ define(['./workbox-f4a68738'], (function (workbox) { 'use strict';
    * See https://goo.gl/S9QRab
    */
   workbox.precacheAndRoute([{
+    "url": "registerSW.js",
+    "revision": "3ca0b8505b4bec776b69afdba2768812"
+  }, {
     "url": "index.html",
-    "revision": "0.9e7kvgf0pt"
+    "revision": "0.0t5p9j2ksng"
   }], {});
   workbox.cleanupOutdatedCaches();
   workbox.registerRoute(new workbox.NavigationRoute(workbox.createHandlerBoundToURL("index.html"), {
     allowlist: [/^\/$/]
   }));
   workbox.registerRoute(({
-    url
+    url: url2
   }) => {
-    return url.pathname.startsWith("/api");
+    return url2.pathname.startsWith("/api");
   }, new workbox.CacheFirst({
     "cacheName": "api-cache",
     plugins: [new workbox.CacheableResponsePlugin({

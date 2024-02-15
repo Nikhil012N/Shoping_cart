@@ -2,6 +2,8 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
 import { VitePWA } from "vite-plugin-pwa";
+
+const url= process.env.VITE_API_URL
 const manifest = {
   name: "Nikhil Vite App",
   short_name: "Shopping Cart",
@@ -48,7 +50,7 @@ export default defineConfig({
     port: 3000,
     proxy: {
       "api/v1": {
-        target: "http://localhost:9080/api/v1",
+        target: url,
         changeOrigin: true,
         secure: false,
       },
