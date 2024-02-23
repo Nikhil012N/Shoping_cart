@@ -93,6 +93,14 @@
 
 }
 
+.loadMore{
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+.loadMore > button{
+ 
+}
 @media (max-width: 640px) {
  .container> .card.card_sl {
   grid-template-columns: 100%;

@@ -3,25 +3,24 @@ import styles from "./product.module.css";
 import toast from "react-hot-toast"
 import { AxiosConfig, apiUrls } from 'src/utils';
 const showProducts = () => {
-  const [products,setProducts]=useState([]);
-   useEffect(()=>{
+const [products,setProducts]=useState([]);
+useEffect(()=>{
 const fetch=async()=>{
 try{
-const response=await AxiosConfig.get(apiUrls?.creatorsProduct);
+const response=await AxiosConfig?.get(apiUrls?.creatorsProduct);
 return setProducts(response?.products)
 }
 catch(error){
   toast.error(error?.message)
 }
-finally{}
 }
 fetch()
-   },[])
+   },[]);
    console.log(products)
   return (
     <div >
       <div className={styles?.card}>
-{/* <table>
+<table>
   <thead>
     <tr>
     {products?.map((head) => (
@@ -79,7 +78,7 @@ fetch()
     </tr>
  
   </tfoot>
-</table> */}
+</table>
 </div>
 
    

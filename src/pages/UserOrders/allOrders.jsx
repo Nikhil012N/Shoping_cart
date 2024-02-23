@@ -1,18 +1,20 @@
-import LocalMallOutlinedIcon from "@mui/icons-material/LocalMallOutlined";
 import { useEffect, useState } from "react";
 import styles from "./orders.module.css";
 import toast from "react-hot-toast";
 import { AxiosConfig, apiUrls } from "src/utils";
+import { DndProvider , useDrag, useDrop } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 
-const SuccessfullOrders = () => {
+const OrderList = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
-
+const [limit,setLimit]=useState(3);
+console.log(limit);
   useEffect(() => {
     const fetch = async () => {
       setLoading(true);
       try {
-        const response = await AxiosConfig.get(apiUrls?.successfullOrders);
+        const response = await AxiosConfig.get(`${apiUrls?.successfullOrders}?limit=${limit}`);
         setOrders(response?.orders);
       } catch (error) {
         toast.error(error?.message);
@@ -21,7 +23,7 @@ const SuccessfullOrders = () => {
       }
     };
     fetch();
-  }, []);
+  }, [limit]);
 
   return (
     <>
@@ -82,7 +84,7 @@ const SuccessfullOrders = () => {
                         </p>
                         <p>
                           <span>Date</span>
-                          {Date(product?.orders?.createdAt).slice(0, -30)}
+                          {new Date(product?.orders?.createdAt).toDateString()}
                         </p>
                       </div>
                     </div>
@@ -93,8 +95,19 @@ const SuccessfullOrders = () => {
           );
         })}
       </div>
+      <div className={styles?.loadMore}><button type="button" onClick={()=>setLimit((limit)=>limit=limit+3)}>Load more</button>
+     </div>
     </>
   );
 };
+
+
+const SuccessfullOrders=()=>{
+  return(
+  <DndProvider backend={HTML5Backend}>
+  <OrderList/>
+  </DndProvider>
+  )
+}
 
 export default SuccessfullOrders;

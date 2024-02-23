@@ -39,7 +39,6 @@ const CreateProduct = () => {
     validationSchema: productValidationSchema,
     onSubmit: async (values) => {
       const { images, ...rest } = values;
-      console.log(values);
       const formdata = new FormData();
       for (let key in rest) {
         formdata.append(key, rest[key]);
@@ -170,7 +169,6 @@ const CreateProduct = () => {
                 multiple
                 onChange={(e) => {
                   const file = e.target.files;
-                  console.log(formik.values);
                   formik?.setFieldValue("images", file);
                 }}
                 onBlur={formik.handleBlur}

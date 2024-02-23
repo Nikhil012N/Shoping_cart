@@ -1,5 +1,5 @@
 {
-  "name": "reactnide",
+  "name": "reactnode",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -9,7 +9,6 @@
     "build": "vite build --manifest",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
-   
   },
   "dependencies": {
     "@emotion/react": "^11.11.1",
@@ -29,6 +28,8 @@
     "js-cookie": "^3.0.5",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
+    "react-dnd": "^16.0.1",
+    "react-dnd-html5-backend": "^16.0.1",
     "react-dom": "^18.2.0",
     "react-error-boundary": "^4.0.12",
     "react-hot-toast": "^2.4.1",

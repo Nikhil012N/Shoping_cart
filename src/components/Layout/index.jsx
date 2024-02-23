@@ -14,15 +14,18 @@ const ProtectedLayout = ({ Component }) => {
   const navigate = useNavigate();
   useEffect(() => {
     setLoading(true);
-    AxiosConfig.get(apiUrls?.getUserProfile)
-      .then((res) => {
-        setUserDetails(res?.user);
-      })
-      .catch(() => {
+    const fetch = async () => {
+      try {
+        const response = await AxiosConfig.get(apiUrls?.getUserProfile);
+        setUserDetails(response?.user);
+      } catch (error) {
         localStorage.clear();
         setUserDetails(null);
-      })
-      .finally(() => setLoading(false));
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetch();
 
     if (location.pathname === "/login" || location.pathname === "/signup") {
       navigate("/");
@@ -38,7 +41,7 @@ const ProtectedLayout = ({ Component }) => {
   if (userDetails) {
     return (
       <>
-        <ProfileContext.Provider value={{userDetails}}>
+        <ProfileContext.Provider value={{ userDetails }}>
           <Header />
           <div className="content">
             <Component />
